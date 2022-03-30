@@ -1,25 +1,19 @@
 Feature: Mail adress
 
-  Background:
+
+  Scenario Outline: Add simple information
+    Given I have opened "chrome" browser
     Given Navigate to page "https://login.mailchimp.com/signup/"
-
-  Scenario: Add simple information
-    Given I have written my email "Igor@mail.com"
-    Given I have written my username "Igor"
-    Given I have written my password "Igor111!"
+    Given I have written my email "<email>"
+    Given I have written my username "<username>"
+    Given I have written my password "<password>"
     When I click the Sign Up button
-    Then my email is open
+    Then Registration result is "<result>"
 
-  Scenario: Add simple information
-    Given I have written my email "Igor@mail.com"
-    Given I have written my username "Igor01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789"
-    Given I have written my password "Igor111!"
-    When I click the Sign Up button
-    Then long username
+    Examples:
+      | email                                                 | username                                                                                                           | password    | result          |
+      | generated                                             | generated                                                                                                          | Igor1111!   | ok              |
+      | Igor1@mail.com                                        | Igor01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789 | Igor1112!   | usernametoolong |
+      |                                                       | IgorM                                                                                                              | Igor11123!  | emailrequired   |
+      | IgorM@mail.com                                        | Igor                                                                                                               | Igor111234! | usernameexists  |
 
-  Scenario: Add simple information
-    Given I have written my email ""
-    Given I have written my username "Igor"
-    Given I have written my password "Igor111!"
-    When I click the Sign Up button
-    Then missing email
